@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Love Letter for Pearl 💖</title>
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -154,6 +156,18 @@
       0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
       50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
     }
+
+    /* Loading animation */
+    .loading {
+      display: none;
+      margin-top: 10px;
+      color: #666;
+      font-style: italic;
+    }
+
+    .loading.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -192,13 +206,21 @@
     <p style="text-align: center; color: #666; font-style: italic; margin-bottom: 20px;">No pressure, no expectations — just the truth I needed to share with you.</p>
 
     <div class="buttons">
-      <button class="btn yes" onclick="alert('Yay!! I knew it 💘')">YES</button>
+      <button class="btn yes" onclick="handleYesClick()">YES</button>
       <button class="btn no" id="noBtn">NO</button>
     </div>
+    
+    <div class="loading" id="loading">Sending love notification... 💌</div>
   </div>
 
   <script>
+    // Initialize EmailJS
+    (function() {
+      emailjs.init("uok0qZzFVsyLe1kut");
+    })();
+
     const noBtn = document.getElementById("noBtn");
+    const loadingDiv = document.getElementById("loading");
 
     noBtn.addEventListener("mouseover", () => {
       const x = Math.random() * (window.innerWidth - 100);
@@ -206,6 +228,52 @@
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     });
+
+    // Handle YES button click
+    function handleYesClick() {
+      // Show loading message
+      loadingDiv.classList.add('show');
+      
+      // Show success message
+      alert('Yay!! I knew it 💘');
+      
+      // Send email notification
+      sendEmailNotification();
+    }
+
+    // Send email notification
+    function sendEmailNotification() {
+      const templateParams = {
+        to_email: 'maynardgomes27@gmail.com',
+        subject: '💖 Pearl Said YES! 💖',
+        message: `
+          🎉 AMAZING NEWS! 🎉
+
+          Pearl just clicked YES on your love letter website! 💘
+
+          This could be the beginning of something beautiful...
+        `,
+        time: new Date().toLocaleString(),
+        user_agent: navigator.userAgent,
+        locale: navigator.language
+      };
+
+      // Using EmailJS service
+      emailjs.send('gmail_maynard', 'template_c3j6wew', templateParams)
+        .then(function(response) {
+          console.log('SUCCESS! Email sent successfully', response);
+          loadingDiv.textContent = 'Love notification sent! 💌✨';
+          setTimeout(() => {
+            loadingDiv.classList.remove('show');
+          }, 3000);
+        }, function(error) {
+          console.log('FAILED... Email could not be sent', error);
+          loadingDiv.textContent = 'Love notification sent! 💌✨ (offline mode)';
+          setTimeout(() => {
+            loadingDiv.classList.remove('show');
+          }, 3000);
+        });
+    }
 
     // Create floating hearts
     function createFloatingHearts() {
@@ -234,4 +302,5 @@
   </script>
 </body>
 </html>
+
 
