@@ -214,9 +214,9 @@
   </div>
 
   <script>
-    // Initialize EmailJS
+    // Initialize EmailJS with your public key
     (function() {
-      emailjs.init("uok0qZzFVsyLe1kut");
+      emailjs.init("uok0qZzFVsyLe1kut"); // your public key
     })();
 
     const noBtn = document.getElementById("noBtn");
@@ -229,49 +229,38 @@
       noBtn.style.top = `${y}px`;
     });
 
-    // Handle YES button click
+    // ✅ This is where the YES button runs the email send
     function handleYesClick() {
-      // Show loading message
       loadingDiv.classList.add('show');
-      
-      // Show success message
       alert('Yay!! I knew it 💘');
-      
-      // Send email notification
       sendEmailNotification();
     }
 
-    // Send email notification
+    // ✅ Paste the templateParams inside this function:
     function sendEmailNotification() {
       const templateParams = {
         to_email: 'maynardgomes27@gmail.com',
         subject: '💖 Pearl Said YES! 💖',
         message: `
-          🎉 AMAZING NEWS! 🎉
-
           Pearl just clicked YES on your love letter website! 💘
 
-          This could be the beginning of something beautiful...
+          This could be the beginning of something beautiful... 💑
         `,
         time: new Date().toLocaleString(),
         user_agent: navigator.userAgent,
         locale: navigator.language
       };
 
-      // Using EmailJS service
+      // Now send the email
       emailjs.send('gmail_maynard', 'template_c3j6wew', templateParams)
         .then(function(response) {
-          console.log('SUCCESS! Email sent successfully', response);
+          console.log('SUCCESS!', response.status, response.text);
           loadingDiv.textContent = 'Love notification sent! 💌✨';
-          setTimeout(() => {
-            loadingDiv.classList.remove('show');
-          }, 3000);
+          setTimeout(() => loadingDiv.classList.remove('show'), 3000);
         }, function(error) {
-          console.log('FAILED... Email could not be sent', error);
-          loadingDiv.textContent = 'Love notification sent! 💌✨ (offline mode)';
-          setTimeout(() => {
-            loadingDiv.classList.remove('show');
-          }, 3000);
+          console.log('FAILED...', error);
+          loadingDiv.textContent = 'Could not send, but love is still in the air! 💞';
+          setTimeout(() => loadingDiv.classList.remove('show'), 3000);
         });
     }
 
@@ -302,5 +291,6 @@
   </script>
 </body>
 </html>
+
 
 
