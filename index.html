@@ -6,60 +6,100 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #ff69b4, #ff1493, #ff69b4);
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       flex-direction: column;
       text-align: center;
-      margin: 0;
       padding: 20px;
-      box-sizing: border-box;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Floating hearts animation */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
     }
 
     .container {
       background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
-      animation: fadeIn 1s ease-in;
+      padding: 40px;
+      max-width: 800px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Teddy Bear */
+    .teddy-bear {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 80px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    .teddy-bear .heart-emoji {
+      font-size: 40px;
+      animation: pulse 1.5s ease-in-out infinite;
+      display: inline-block;
+      margin-left: -20px;
+      margin-top: -20px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .love-letter {
+      text-align: left;
+      line-height: 1.8;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .love-letter p {
+      margin-bottom: 15px;
     }
 
     h1 {
       color: #ff4081;
       font-size: 2.5rem;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+      text-align: center;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .message {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: #333;
-      margin-bottom: 30px;
-      text-align: left;
-      background: #fff5f5;
-      padding: 25px;
-      border-radius: 15px;
-      border-left: 5px solid #ff4081;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .message p {
-      margin: 0 0 15px 0;
-    }
-
-    .message p:last-child {
-      margin-bottom: 0;
-      font-weight: bold;
-      color: #ff4081;
     }
 
     .buttons {
@@ -67,97 +107,92 @@
       display: flex;
       gap: 20px;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     .btn {
       padding: 15px 30px;
       font-size: 18px;
       border: none;
-      border-radius: 25px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
 
     .yes {
       background: linear-gradient(45deg, #4caf50, #45a049);
       color: white;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
     }
 
     .yes:hover {
-      background: linear-gradient(45deg, #45a049, #4caf50);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
     }
 
     .no {
       background: linear-gradient(45deg, #f44336, #d32f2f);
       color: white;
-      position: relative;
+      position: absolute;
+      box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
     }
 
     .no:hover {
-      background: linear-gradient(45deg, #d32f2f, #f44336);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
     }
 
-    .hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .heart {
+    /* Decorative elements */
+    .sparkles {
       position: absolute;
-      font-size: 20px;
-      color: rgba(255, 105, 180, 0.3);
-      animation: float 6s ease-in-out infinite;
+      font-size: 24px;
+      animation: sparkle 2s ease-in-out infinite;
+      opacity: 0.8;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-    }
-
-    .special-text {
-      background: linear-gradient(45deg, #ff4081, #ff69b4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: bold;
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+      50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts"></div>
-  
+  <!-- Floating hearts background -->
+  <div class="floating-hearts" id="floatingHearts"></div>
+
   <div class="container">
-    <h1>Will you be mine, Pearl? 💖</h1>
-    
-    <div class="message">
-      <p>I liked you so much but I couldn't tell you because I was scared of rejection. For 2 years I liked you, now you stopped saying good morning and we worked together on research project, the way we used to message...</p>
-      
-      <p>I know I'm asking you too late but before I lose you or we're out of contact, I want you to know that I have feelings for you.</p>
-      
-      <p>Will you be my <span class="special-text">girlfriend</span> and my <span class="special-text">future wife</span>? 💕</p>
+    <!-- Teddy Bear with Heart -->
+    <div class="teddy-bear">
+      🧸<span class="heart-emoji">💖</span>
     </div>
 
+    <!-- Sparkles decoration -->
+    <div class="sparkles" style="top: 20px; left: 20px;">✨</div>
+    <div class="sparkles" style="top: 20px; right: 20px;">✨</div>
+    <div class="sparkles" style="bottom: 20px; left: 20px;">✨</div>
+    <div class="sparkles" style="bottom: 20px; right: 20px;">✨</div>
+
+    <div class="love-letter">
+      <p><strong>Hi Pearl,</strong></p>
+      
+      <p>There's something I've wanted to say for a long time, but I never found the courage to tell you — maybe because I was scared of how you might react, or maybe because I didn't want to risk losing the bond we had.</p>
+      
+      <p>I've liked you for two years now. Being around you in college, especially when we worked on that research project together, made my days special. The way we used to chat, laugh, and talk — I truly cherished those moments.</p>
+      
+      <p>Now that college is over, I realize how much I miss you — not just as a friend or classmate, but as someone I deeply care about. And as we move forward in life, I don't want to carry these feelings in silence or regret not saying them when I had the chance.</p>
+      
+      <p>So, this might be sudden, but I sent you this message — and this website — because I want you to know something honest and from the heart:</p>
+      
+      <p><strong>I have feelings for you. I always have.</strong><br>
+      And before we drift apart or go our separate ways, I want to ask you this, genuinely:</p>
+    </div>
+
+    <h1>Will you be my girlfriend — and maybe someday, my future wife? 💕</h1>
+    
+    <p style="text-align: center; color: #666; font-style: italic; margin-bottom: 20px;">No pressure, no expectations — just the truth I needed to share with you.</p>
+
     <div class="buttons">
-      <form action="mailto:maynardgomes27@gmail.com" method="POST" enctype="text/plain">
-        <input type="hidden" name="subject" value="Love Letter Response">
-        <input type="hidden" name="message" value="Pearl said YES! 💖">
-        <button class="btn yes" type="submit" onclick="sayYes()">YES 💘</button>
-      </form>
+      <button class="btn yes" onclick="alert('Yay!! I knew it 💘')">YES</button>
       <button class="btn no" id="noBtn">NO</button>
     </div>
   </div>
@@ -172,42 +207,31 @@
       noBtn.style.top = `${y}px`;
     });
 
-    function sayYes() {
-      alert('Yay!! I knew it 💘 I love you so much! ❤️');
-      createHearts();
-    }
-
-    function createHearts() {
-      const heartsContainer = document.getElementById('hearts');
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.className = 'heart';
-          heart.innerHTML = '💖';
-          heart.style.left = Math.random() * 100 + '%';
-          heart.style.animationDelay = Math.random() * 2 + 's';
-          heartsContainer.appendChild(heart);
-          
-          setTimeout(() => {
-            heart.remove();
-          }, 6000);
-        }, i * 200);
-      }
-    }
-
-    // Create floating hearts on page load
-    window.addEventListener('load', () => {
-      const heartsContainer = document.getElementById('hearts');
-      for (let i = 0; i < 15; i++) {
+    // Create floating hearts
+    function createFloatingHearts() {
+      const heartsContainer = document.getElementById('floatingHearts');
+      const hearts = ['💖', '💕', '💗', '💓', '💝'];
+      
+      setInterval(() => {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.innerHTML = '💕';
-        heart.style.left = Math.random() * 100 + '%';
-        heart.style.top = Math.random() * 100 + '%';
-        heart.style.animationDelay = Math.random() * 6 + 's';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        
         heartsContainer.appendChild(heart);
-      }
-    });
+        
+        // Remove heart after animation
+        setTimeout(() => {
+          heart.remove();
+        }, 6000);
+      }, 300);
+    }
+
+    // Start floating hearts animation
+    createFloatingHearts();
   </script>
 </body>
 </html>
+
